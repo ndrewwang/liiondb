@@ -1,5 +1,4 @@
 streamlit
-postgresql
 pandas
 numpy
 matplotlib
