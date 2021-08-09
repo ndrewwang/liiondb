@@ -3,9 +3,5 @@ streamlit
 pandas
 numpy
 matplotlib
-inspect
-sys
-os
-webbrowser
 altair
 markdown
