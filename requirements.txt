@@ -1,8 +1,8 @@
+psycopg2-binary==2.9.1
 streamlit
 pandas
 numpy
 matplotlib
-psycopg2-binary==2.9.1
 inspect
 sys
 os
