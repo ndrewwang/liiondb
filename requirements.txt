@@ -1,12 +1,12 @@
 streamlit
+postgresql
 pandas
 numpy
 matplotlib
-psycopg2-binary==2.9.1
+psycopg2-binary
 inspect
 sys
 os
 webbrowser
 altair
 markdown
-postgresql
