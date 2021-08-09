@@ -1,0 +1,11 @@
+streamlit
+pandas
+numpy
+matplotlib
+psycopg2-binary
+inspect
+sys
+os
+webbrowser
+altair
+markdown
