@@ -216,11 +216,11 @@ def page_dashboard(state):
         # st.write('array')
         col1, col2, col3, col4 = st.beta_columns(4)
         col1.markdown('***DATA: FUNCTION***')
-        Tlow = np.double(df.temp_range[0].lower)
-        Tlow
-        Tup = np.double(df.temp_range[0].upper)
-        Tup = Tup+0.001
-        tempslide = col2.slider('Temp [K]',np.float(Tlow),np.float(Tup))
+        # Tlow = np.double(df.temp_range[0].lower)
+        # Tlow
+        # Tup = np.double(df.temp_range[0].upper)
+        # Tup = Tup+0.001
+        # tempslide = col2.slider('Temp [K]',np.float(Tlow),np.float(Tup))
         disp_option = col3.radio("Display options",('Plot', 'See Function'))
         c_low = float(df.input_range.to_numpy()[0].lower)+0.001
         c_max = float(df.input_range.to_numpy()[0].upper)-0.001
@@ -419,10 +419,10 @@ LIMIT 5
         # st.write('array')
         col1, col2, col3, col4 = st.beta_columns(4)
         col1.markdown('***DATA: FUNCTION***')
-        Tlow = np.double(df.temp_range[0].lower)
-        Tup = np.double(df.temp_range[0].upper)
-        Tup = Tup+0.001
-        tempslide = col2.slider('Temp [K]',np.float(Tlow),np.float(Tup))
+        # Tlow = np.double(df.temp_range[0].lower)
+        # Tup = np.double(df.temp_range[0].upper)
+        # Tup = Tup+0.001
+        # tempslide = col2.slider('Temp [K]',np.float(Tlow),np.float(Tup))
         disp_option = col3.radio("Display options",('Plot', 'See Function'))
         c_low = float(df.input_range.to_numpy()[0].lower)+0.001
         c_max = float(df.input_range.to_numpy()[0].upper)-0.001
