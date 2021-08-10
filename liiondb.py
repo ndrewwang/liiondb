@@ -29,7 +29,7 @@ def main():
         "Dashboard": page_dashboard,
         "Advanced Queries": page_advanced,
     }
-    st.sidebar.title(":battery: LiionDB")
+    st.sidebar.title(":battery: LiionDB (ALPHA)")
     st.sidebar.markdown('<h2>DFN Parameter Database</h2>', unsafe_allow_html=True)
     page = st.sidebar.radio("Select your page", tuple(pages.keys()))
     # Display the selected page with the session state
