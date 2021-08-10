@@ -167,7 +167,33 @@ def page_dashboard(state):
             JOIN method ON data_method.method_id = method.method_id
             WHERE data.data_id= %s
             '''%str(state.dash_data_id)
+    QUERY_nomethod = f'''
+            SELECT DISTINCT data.data_id,
+            data.raw_data_class,
+            data.temp_range as temp_range,
+            parameter.name as param_name,
+            parameter.symbol as param_symbol,
+            parameter.class as param_class,
+            parameter.units_output as unit_out,
+            parameter.units_input as unit_in,
+             paper.paper_tag,
+             paper.url,
+             paper.title,
+             paper.authors,
+             data.raw_data,
+             data.notes,
+             material.name as mat_name,
+             material.class as mat_class,
+             material.note as mat_note
+            FROM data
+            JOIN paper ON paper.paper_id = data.paper_id
+            JOIN material ON material.material_id = data.material_id
+            JOIN parameter ON parameter.parameter_id = data.parameter_id
+            WHERE data.data_id = '{state.data_id}'
+            '''
     dispdf = pd.read_sql(QUERY,dfndb)
+    if dispdf.size == 0:
+        dispdf = pd.read_sql(QUERY_nomethod,dfndb)
     # st.dataframe(dispdf.transpose(),height = 1000)
     st.write("---")
     #PARAMETER
@@ -273,10 +299,12 @@ def page_dashboard(state):
     col2.markdown('***TEMP RANGE*** [K]')
     col2.write(dispdf.temp_range.iloc[0])
     col3.markdown('***METHODS***')
-    methoddf = dispdf.method_name
-    methoddf = methoddf.astype(str) + ','
-    col3.write(methoddf.to_string(index=False))
-
+    try:
+        methoddf = dispdf.method_name
+        methoddf = methoddf.astype(str) + ','
+        col3.write(methoddf.to_string(index=False))
+    except:
+        col3.write('No method available')
 
 def page_advanced(state):
     st.title(":rocket: Advanced Queries")
@@ -369,9 +397,36 @@ LIMIT 5
             JOIN parameter ON parameter.parameter_id = data.parameter_id
             JOIN data_method ON data.data_id = data_method.data_id
             JOIN method ON data_method.method_id = method.method_id
-            WHERE data.data_id= %s
-            '''%str(state.data_id)
+            WHERE data.data_id = '{state.data_id}'
+            '''
+    QUERY_nomethod = f'''
+            SELECT DISTINCT data.data_id,
+            data.raw_data_class,
+            data.temp_range as temp_range,
+            parameter.name as param_name,
+            parameter.symbol as param_symbol,
+            parameter.class as param_class,
+            parameter.units_output as unit_out,
+            parameter.units_input as unit_in,
+             paper.paper_tag,
+             paper.url,
+             paper.title,
+             paper.authors,
+             data.raw_data,
+             data.notes,
+             material.name as mat_name,
+             material.class as mat_class,
+             material.note as mat_note
+            FROM data
+            JOIN paper ON paper.paper_id = data.paper_id
+            JOIN material ON material.material_id = data.material_id
+            JOIN parameter ON parameter.parameter_id = data.parameter_id
+            WHERE data.data_id = '{state.data_id}'
+            '''
     dispdf = pd.read_sql(QUERY,dfndb)
+    if dispdf.size == 0:
+        dispdf = pd.read_sql(QUERY_nomethod,dfndb)
+
     # st.dataframe(dispdf.transpose(),height = 1000)
     st.write("---")
     #PARAMETER
@@ -476,9 +531,12 @@ LIMIT 5
     col2.markdown('***TEMP RANGE*** [K]')
     col2.write(dispdf.temp_range.iloc[0])
     col3.markdown('***METHODS***')
-    methoddf = dispdf.method_name
-    methoddf = methoddf.astype(str) + ','
-    col3.write(methoddf.to_string(index=False))
+    try:
+        methoddf = dispdf.method_name
+        methoddf = methoddf.astype(str) + ','
+        col3.write(methoddf.to_string(index=False))
+    except:
+        col3.write('No method available')
 
 
 def display_state_values(state):
