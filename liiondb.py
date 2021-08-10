@@ -5,9 +5,9 @@ import inspect
 import sys
 import os
 import importlib
-from modules import fn_sql
-from modules import fn_db
-from modules import fn_plot
+import fn_sql
+import fn_db
+import fn_plot
 import pandas as pd
 import numpy as np
 import webbrowser
@@ -193,7 +193,7 @@ def page_dashboard(state):
     QUERY = 'SELECT * FROM data WHERE data_id = %s;' %str(state.dash_data_id)
     df = pd.read_sql(QUERY,dfndb)
     csv_data = fn_db.read_data(df)
-    from modules import parameter_from_db #import/reload parameter_from_db.py file
+    import parameter_from_db #import/reload parameter_from_db.py file
     importlib.reload(parameter_from_db)
 
 
@@ -222,7 +222,7 @@ def page_dashboard(state):
                 log = 'linear'
             fn_plot.plotalt(x,y,log,mat_class,param_name,unit_in,unit_out)
         if disp_option == 'Array':
-            csvdf = pd.DataFrame(csv_data,beta_columns=[unit_in, unit_out])
+            csvdf = pd.DataFrame(csv_data,columns=[unit_in, unit_out])
             csvdf
 
     elif dispdf.raw_data_class.iloc[0] == 'function':
@@ -397,7 +397,7 @@ LIMIT 5
     QUERY = 'SELECT * FROM data WHERE data_id = %s;' %str(state.data_id)
     df = pd.read_sql(QUERY,dfndb)
     csv_data = fn_db.read_data(df)
-    from modules import parameter_from_db #import/reload parameter_from_db.py file
+    import parameter_from_db #import/reload parameter_from_db.py file
     importlib.reload(parameter_from_db)
 
 
@@ -426,7 +426,7 @@ LIMIT 5
                 log = 'linear'
             fn_plot.plotalt(x,y,log,mat_class,param_name,unit_in,unit_out)
         if disp_option == 'Array':
-            csvdf = pd.DataFrame(csv_data,beta_columns=[unit_in, unit_out])
+            csvdf = pd.DataFrame(csv_data,columns=[unit_in, unit_out])
             csvdf
 
     elif dispdf.raw_data_class.iloc[0] == 'function':

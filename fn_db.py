@@ -9,7 +9,7 @@ def read_data(df):
     raw_data_class = df['raw_data_class'][0]
     function_binary = df['function'][0]
     cwd = os.getcwd()
-    write_file_path = cwd + '/modules/parameter_from_db.py'
+    write_file_path = cwd + '/parameter_from_db.py'
 
     if raw_data_class == 'value':
 
