@@ -8,4 +8,4 @@ RUN cp config.toml ~/.streamlit/config.toml
 RUN cp credentials.toml ~/.streamlit/credentials.toml
 WORKDIR /app
 ENTRYPOINT ["streamlit", "run"]
-CMD ["liiondb_streamlit_ui.py"]
+CMD ["liiondb.py"]

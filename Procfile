@@ -1,1 +1,1 @@
-web: sh setup.sh && streamlit run liiondb_streamlit_ui.py
+web: sh setup.sh && streamlit run liiondb.py

@@ -1,15 +1,15 @@
 def write_file(function_binary,write_file_path):
     with open(write_file_path, 'wb') as f:
         f.write(function_binary)
-   
-def read_data(df):    
+
+def read_data(df):
     import numpy as np
     import os
     raw_data = df['raw_data'][0]
     raw_data_class = df['raw_data_class'][0]
     function_binary = df['function'][0]
-    cwd = os.getcwd()   
-    write_file_path = cwd + '/parameter_from_db.py'
+    cwd = os.getcwd()
+    write_file_path = cwd + '/modules/parameter_from_db.py'
 
     if raw_data_class == 'value':
 

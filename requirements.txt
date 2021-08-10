@@ -1,8 +1,9 @@
 psycopg2-binary==2.9.1
 sqlalchemy
-streamlit
+streamlit==0.84
 pandas
 numpy
 matplotlib
 altair
 markdown
+modules

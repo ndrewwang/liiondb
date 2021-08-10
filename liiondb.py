@@ -180,7 +180,7 @@ def page_dashboard(state):
     QUERY = 'SELECT * FROM data WHERE data_id = %s;' %str(state.data_id)
     df = pd.read_sql(QUERY,dfndb)
     csv_data = fn_db.read_data(df)
-    import parameter_from_db #import/reload parameter_from_db.py file
+    from modules import parameter_from_db #import/reload parameter_from_db.py file
     importlib.reload(parameter_from_db)
 
 
@@ -209,18 +209,18 @@ def page_dashboard(state):
                 log = 'linear'
             fn_plot.plotalt(x,y,log,mat_class,param_name,unit_in,unit_out)
         if disp_option == 'Array':
-            csvdf = pd.DataFrame(csv_data,columns=[unit_in, unit_out])
+            csvdf = pd.DataFrame(csv_data,beta_columns=[unit_in, unit_out])
             csvdf
 
     elif dispdf.raw_data_class.iloc[0] == 'function':
         # st.write('array')
         col1, col2, col3, col4 = st.beta_columns(4)
         col1.markdown('***DATA: FUNCTION***')
-        # Tlow = np.double(df.temp_range[0].lower)
-        # Tlow
-        # Tup = np.double(df.temp_range[0].upper)
-        # Tup = Tup+0.001
-        # tempslide = col2.slider('Temp [K]',np.float(Tlow),np.float(Tup))
+        Tlow = np.double(df.temp_range[0].lower)
+
+        Tup = np.double(df.temp_range[0].upper)
+        Tup = Tup+0.001
+        tempslide = col2.slider('Temp [K]',np.float(Tlow),np.float(Tup))
         disp_option = col3.radio("Display options",('Plot', 'See Function'))
         c_low = float(df.input_range.to_numpy()[0].lower)+0.001
         c_max = float(df.input_range.to_numpy()[0].upper)-0.001
@@ -306,6 +306,7 @@ LIMIT 5
     st.markdown('<h3>Results Table</h3>', unsafe_allow_html=True)
     df = pd.read_sql(state.query,dfndb)
     df_result = st.dataframe(df,height = 1000)
+    # df
 
     # if state.data_id is None:
     #     options = df.data_id.to_numpy()
@@ -383,7 +384,7 @@ LIMIT 5
     QUERY = 'SELECT * FROM data WHERE data_id = %s;' %str(state.data_id)
     df = pd.read_sql(QUERY,dfndb)
     csv_data = fn_db.read_data(df)
-    import parameter_from_db #import/reload parameter_from_db.py file
+    from modules import parameter_from_db #import/reload parameter_from_db.py file
     importlib.reload(parameter_from_db)
 
 
@@ -412,17 +413,17 @@ LIMIT 5
                 log = 'linear'
             fn_plot.plotalt(x,y,log,mat_class,param_name,unit_in,unit_out)
         if disp_option == 'Array':
-            csvdf = pd.DataFrame(csv_data,columns=[unit_in, unit_out])
+            csvdf = pd.DataFrame(csv_data,beta_columns=[unit_in, unit_out])
             csvdf
 
     elif dispdf.raw_data_class.iloc[0] == 'function':
         # st.write('array')
         col1, col2, col3, col4 = st.beta_columns(4)
         col1.markdown('***DATA: FUNCTION***')
-        # Tlow = np.double(df.temp_range[0].lower)
-        # Tup = np.double(df.temp_range[0].upper)
-        # Tup = Tup+0.001
-        # tempslide = col2.slider('Temp [K]',np.float(Tlow),np.float(Tup))
+        Tlow = np.double(df.temp_range[0].lower)
+        Tup = np.double(df.temp_range[0].upper)
+        Tup = Tup+0.001
+        tempslide = col2.slider('Temp [K]',np.float(Tlow),np.float(Tup))
         disp_option = col3.radio("Display options",('Plot', 'See Function'))
         c_low = float(df.input_range.to_numpy()[0].lower)+0.001
         c_max = float(df.input_range.to_numpy()[0].upper)-0.001
