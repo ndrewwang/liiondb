@@ -1,23 +1,10 @@
+def function(x): 
 
-def function(c_e,T):
-    import numpy as np
-    # FITTING:
-    # Equations taken directly from paper
-    
-    p1 = 7.98E-1
-    p2 = 2.28E2
-    p3 = -1.22E0
-    p4 = 5.09E-1
-    p5 = -4.00E-3
-    p6 = 3.79E-3
-    
-    c_e = np.array(c_e)
-    T = np.array(T)
-    
-    c_e = c_e/1000 #mol/m3 to mol/L
-    
-    cond = p1 * (1 + (T - p2)) * c_e * ((1 + p3*np.sqrt(c_e) + p4*(1+p5*np.exp(1000/T)) * c_e) / (1 + c_e**4 * (p6*np.exp(1000/T))))
-    
-    cond = cond/10 #mS/cm to S/m
-    
-    return cond
+#Functional form with 0 -a*exp(b(x-c)) terms and 2 -a*tanh(b(x-c)) terms.
+#10 total terms with combinations of tanh() and exp() were attempted. 
+#Fit had the lowest number of terms within 0.5 percent of the best mean-squared-error. 
+
+ import numpy as np 
+ p =[4.03980138,0.23744244,6.28599571,0.87605954,0.35813992,5.11924927,0.24474335] 
+ y = p[0]  - p[1] * np.tanh(p[2] * (x - p[3])) - p[4] * np.tanh(p[5] * (x - p[6]))
+ return y

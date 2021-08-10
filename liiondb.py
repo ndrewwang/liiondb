@@ -36,6 +36,19 @@ def main():
     pages[page](state)
     # Mandatory to avoid rollbacks with widgets, must be called at the end of your app
     state.sync()
+    st.sidebar.markdown('<h3>Info</h3>', unsafe_allow_html=True)
+    st.sidebar.info(
+        "This interactive database of DFN-type battery model parameters "
+        "accompanies the review manuscript: "
+        "[**Parameterising Continuum-Level Li-ion Battery Models**.](https://www.overleaf.com/project/5ed63d9378cbf700018a2018)"
+        " If you use LiionDB in your work, please cite our paper at: "
+        "[doi.org](https://www.doi.org/)")
+    st.sidebar.markdown('<h3>About</h3>', unsafe_allow_html=True)
+    st.sidebar.info(
+        "LiionDB is a part of the "
+        "[**Multi-Scale Modelling**](https://www.faraday.ac.uk/research/lithium-ion/battery-system-modelling/)"
+        " project within "
+        "[**The Faraday Institution**.](https://www.faraday.ac.uk/)")
 
 def page_dashboard(state):
     st.title(":mag_right: Dashboard")
@@ -67,29 +80,29 @@ def page_dashboard(state):
             '''
     df = pd.read_sql(QUERY,dfndb)
     classdf = df
-    state.mat_type = col1.selectbox('1. Material Type',classdf)
+    state.dash_mat_type = col1.selectbox('1. Material Type',classdf)
 
     #PARAMETER SECOND
     QUERY = f'''
             SELECT DISTINCT parameter.name
             FROM parameter
-            WHERE parameter.class = '{state.mat_type}'
+            WHERE parameter.class = '{state.dash_mat_type}'
             '''
     df = pd.read_sql(QUERY,dfndb)
     paramdf = df
-    state.param_name = col2.selectbox('2. Parameter',paramdf)
+    state.dash_param_name = col2.selectbox('2. Parameter',paramdf)
 
     QUERY = f'''
             SELECT DISTINCT material.name
             FROM material
             JOIN data ON data.material_id = material.material_id
             JOIN parameter ON parameter.parameter_id = data.parameter_id
-            WHERE material.class = '{state.mat_type}'
-            AND parameter.name = '{state.param_name}'
+            WHERE material.class = '{state.dash_mat_type}'
+            AND parameter.name = '{state.dash_param_name}'
             '''
     df = pd.read_sql(QUERY,dfndb)
     matdf = df
-    state.mat_name = col3.selectbox('3. Material Name',matdf)
+    state.dash_mat_name = col3.selectbox('3. Material Name',matdf)
 
     QUERY = f'''
             SELECT DISTINCT paper.paper_tag
@@ -97,33 +110,33 @@ def page_dashboard(state):
             JOIN data ON data.paper_id = paper.paper_id
             JOIN material ON material.material_id = data.material_id
             JOIN parameter ON parameter.parameter_id = data.parameter_id
-            WHERE material.class = '{state.mat_type}'
-            AND parameter.name = '{state.param_name}'
-            AND material.name = '{state.mat_name}'
+            WHERE material.class = '{state.dash_mat_type}'
+            AND parameter.name = '{state.dash_param_name}'
+            AND material.name = '{state.dash_mat_name}'
             '''
     df = pd.read_sql(QUERY,dfndb)
     papdf = df
-    state.paper_name = col4.selectbox('4. Paper Source',papdf)
-        # state.query = form.text_area('Note: "data.data_id" required',state.query,height=300)
+    state.dash_paper_name = col4.selectbox('4. Paper Source',papdf)
+        # state.dash_query = form.text_area('Note: "data.data_id" required',state.dash_query,height=300)
 
 
     st.markdown('<h3>Results Table</h3>', unsafe_allow_html=True)
-    state.dashquery = f'''SELECT DISTINCT data.data_id,parameter.name as parameter, material.name as material, paper.paper_tag,data.raw_data, parameter.units_output, data.temp_range, data.notes
+    state.dash_dashquery = f'''SELECT DISTINCT data.data_id,parameter.name as parameter, material.name as material, paper.paper_tag,data.raw_data, parameter.units_output, data.temp_range, data.notes
     FROM data
     JOIN paper ON paper.paper_id = data.paper_id
     JOIN material ON material.material_id = data.material_id
     JOIN parameter ON parameter.parameter_id = data.parameter_id
-    WHERE parameter.name = '{state.param_name}'
-    AND material.name = '{state.mat_name}'
-    AND paper.paper_tag = '{state.paper_name}'
+    WHERE parameter.name = '{state.dash_param_name}'
+    AND material.name = '{state.dash_mat_name}'
+    AND paper.paper_tag = '{state.dash_paper_name}'
                 '''
-    df = pd.read_sql(state.dashquery,dfndb)
+    df = pd.read_sql(state.dash_dashquery,dfndb)
     df_result = st.dataframe(df.head(1),height = 1000)
     # df_result = st.dataframe(df,height = 1000)
-    state.data_id = df.data_id.iloc[0]
-    # st.write(state.data_id)
+    state.dash_data_id = df.data_id.iloc[0]
+    # st.write(state.dash_data_id)
     # form = st.form(key='expandData',clear_on_submit=False)
-    # state.data_id = form.selectbox('Choose row:',options)
+    # state.dash_data_id = form.selectbox('Choose row:',options)
     # submit_button = form.form_submit_button(label='Load Data')
     # if submit_button:
     QUERY = f'''
@@ -153,7 +166,7 @@ def page_dashboard(state):
             JOIN data_method ON data.data_id = data_method.data_id
             JOIN method ON data_method.method_id = method.method_id
             WHERE data.data_id= %s
-            '''%str(state.data_id)
+            '''%str(state.dash_data_id)
     dispdf = pd.read_sql(QUERY,dfndb)
     # st.dataframe(dispdf.transpose(),height = 1000)
     st.write("---")
@@ -177,7 +190,7 @@ def page_dashboard(state):
     unit_in = dispdf.unit_in.iloc[0]
     unit_out = dispdf.unit_out.iloc[0]
 
-    QUERY = 'SELECT * FROM data WHERE data_id = %s;' %str(state.data_id)
+    QUERY = 'SELECT * FROM data WHERE data_id = %s;' %str(state.dash_data_id)
     df = pd.read_sql(QUERY,dfndb)
     csv_data = fn_db.read_data(df)
     from modules import parameter_from_db #import/reload parameter_from_db.py file
