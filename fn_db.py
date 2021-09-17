@@ -1,14 +1,14 @@
 def write_file(function_binary,write_file_path):
     with open(write_file_path, 'wb') as f:
         f.write(function_binary)
-
-def read_data(df):
+   
+def read_data(df):    
     import numpy as np
     import os
     raw_data = df['raw_data'][0]
     raw_data_class = df['raw_data_class'][0]
     function_binary = df['function'][0]
-    cwd = os.getcwd()
+    cwd = os.getcwd()   
     write_file_path = cwd + '/parameter_from_db.py'
 
     if raw_data_class == 'value':
@@ -32,9 +32,5 @@ def read_data(df):
         csv_list = eval(csv_array)
         raw_data = csv_list
         raw_data = np.array(raw_data)
-        print(type(function_binary))
-        if type(function_binary) != type(None):
-            write_file(function_binary,write_file_path)
-            print('parameter_from_db.py downloaded')
 
     return raw_data

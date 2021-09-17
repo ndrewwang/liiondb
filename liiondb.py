@@ -13,6 +13,7 @@ import numpy as np
 import webbrowser
 import altair as alt
 import markdown
+import base64
 
 try:
     # Before Streamlit 0.65
@@ -25,8 +26,10 @@ except ModuleNotFoundError:
 
 def main():
     state = _get_state()
+
+    # ================ SIDE BAR PAGES AND TEXT ===============================
     pages = {
-        "Dashboard": page_dashboard,
+        "Parameter Dashboard": page_dashboard,
         "Advanced Queries": page_advanced,
     }
     st.sidebar.title(":battery: LiionDB (ALPHA)")
@@ -50,8 +53,9 @@ def main():
         " project within "
         "[**The Faraday Institution**.](https://www.faraday.ac.uk/)")
 
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SIMPLE QUERY BUILDER  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 def page_dashboard(state):
-    st.title(":mag_right: Dashboard")
+    st.title(":mag_right: Parameter Dashboard")
     @st.cache(allow_output_mutation=True, hash_funcs={"_thread.RLock": lambda _: None})
     def init_connection():
         db_connection_string = {
@@ -69,11 +73,10 @@ def page_dashboard(state):
     # display_state_values(state)
     st.write("---")
     col1,col2,col3,col4 = st.beta_columns(4)
-
-    #MATERIAL first
-    # FIRST SIDE BAR DROPDOWN
+    # ===============================DROP DOWN SELECTION CHOICES  ===============================
 
 
+    #--------------------------------- MATERIAL CLASS DROPDOWN ---------------------------------
     QUERY = '''
             SELECT DISTINCT material.class
             FROM material
@@ -82,7 +85,7 @@ def page_dashboard(state):
     classdf = df
     state.dash_mat_type = col1.selectbox('1. Material Type',classdf)
 
-    #PARAMETER SECOND
+    #--------------------------------- PARAMETER DROPDOWN ---------------------------------
     QUERY = f'''
             SELECT DISTINCT parameter.name
             FROM parameter
@@ -92,6 +95,7 @@ def page_dashboard(state):
     paramdf = df
     state.dash_param_name = col2.selectbox('2. Parameter',paramdf)
 
+    #---------------------------------MATERIAL DROPDOWN ---------------------------------
     QUERY = f'''
             SELECT DISTINCT material.name
             FROM material
@@ -104,6 +108,7 @@ def page_dashboard(state):
     matdf = df
     state.dash_mat_name = col3.selectbox('3. Material Name',matdf)
 
+    #---------------------------------SPECIFIC PAPER DROPDOWN ---------------------------------
     QUERY = f'''
             SELECT DISTINCT paper.paper_tag
             FROM paper
@@ -117,9 +122,8 @@ def page_dashboard(state):
     df = pd.read_sql(QUERY,dfndb)
     papdf = df
     state.dash_paper_name = col4.selectbox('4. Paper Source',papdf)
-        # state.dash_query = form.text_area('Note: "data.data_id" required',state.dash_query,height=300)
 
-
+    #=============================== QUERY RESULTS TABLE ===============================
     st.markdown('<h3>Results Table</h3>', unsafe_allow_html=True)
     state.dash_dashquery = f'''SELECT DISTINCT data.data_id,parameter.name as parameter, material.name as material, paper.paper_tag,data.raw_data, parameter.units_output, data.temp_range, data.notes
     FROM data
@@ -196,6 +200,7 @@ def page_dashboard(state):
         dispdf = pd.read_sql(QUERY_nomethod,dfndb)
     # st.dataframe(dispdf.transpose(),height = 1000)
     st.write("---")
+    #=============================== DISPLAY DATA PRETTY  ===============================
     #PARAMETER
     st.markdown('***PARAMETER***')
     col1, col2 = st.beta_columns(2)
@@ -209,7 +214,7 @@ def page_dashboard(state):
     col2.write(dispdf.mat_note.iloc[0],unsafe_allow_html=True)
 
     st.write('---')
-    #PLOTTING SHOWING Data
+    #------------------------------------- PLOTTING  -------------------------------------
     log = 'linear'
     mat_class = dispdf.mat_class.iloc[0]
     param_name = dispdf.param_name.iloc[0]
@@ -227,15 +232,18 @@ def page_dashboard(state):
     if dispdf.raw_data_class.iloc[0] == 'value':
         col1, col2, col3, col4 = st.beta_columns(4)
         col1.markdown('***DATA: VALUE***')
-        col3.markdown(''+dispdf.raw_data.iloc[0]+'',unsafe_allow_html=True)
+        if float(dispdf.raw_data.iloc[0])<1E-4:
+                col3.markdown("{:.2e}".format(float(dispdf.raw_data.iloc[0])),unsafe_allow_html=True)
+        else:
+            col3.markdown(''+dispdf.raw_data.iloc[0]+'',unsafe_allow_html=True)
         col4.markdown(dispdf.unit_out.iloc[0])
 
     elif dispdf.raw_data_class.iloc[0] == 'array':
-        # st.write('array')
         col1, col2, col3 = st.beta_columns(3)
         col1.markdown('***DATA: ARRAY***')
         disp_option = col2.radio("Display options",('Plot', 'Array'))
         csv_data = fn_db.read_data(df)
+
         c = csv_data[:,0]
         y = csv_data[:,1]
         x = c
@@ -249,21 +257,27 @@ def page_dashboard(state):
             fn_plot.plotalt(x,y,log,mat_class,param_name,unit_in,unit_out)
         if disp_option == 'Array':
             csvdf = pd.DataFrame(csv_data,columns=[unit_in, unit_out])
-            csvdf
+            csvdf.iloc[:, 0] = pd.to_numeric(csvdf.iloc[:, 0], downcast="float")
+            st.write(csvdf.style.format("{:.2e}"))
+
+        #------------------------------------- DOWNLOAD CSV  -------------------------------------
+        csvdf = pd.DataFrame(csv_data,columns=[unit_in, unit_out])
+        csv = csvdf.to_csv(index=False)
+        b64 = base64.b64encode(csv.encode()).decode()  # some strings <-> bytes conversions necessary here
+        href = f'<a href="data:file/csv;base64,{b64}">**[Download CSV]**</a> right-click and save as &lt;array_name&gt;.csv'
+        st.markdown(href, unsafe_allow_html=True)
 
     elif dispdf.raw_data_class.iloc[0] == 'function':
-        # st.write('array')
         col1, col2, col3, col4 = st.beta_columns(4)
         col1.markdown('***DATA: FUNCTION***')
         Tlow = np.double(df.temp_range[0].lower)
-
         Tup = np.double(df.temp_range[0].upper)
         Tup = Tup+0.001
         tempslide = col2.slider('Temp [K]',np.float(Tlow),np.float(Tup))
         disp_option = col3.radio("Display options",('Plot', 'See Function'))
         c_low = float(df.input_range.to_numpy()[0].lower)+0.001
         c_max = float(df.input_range.to_numpy()[0].upper)-0.001
-        c = np.linspace(c_low,c_max,10000)
+        c = np.linspace(c_low,c_max,100)
         T = tempslide
         try:
             y = parameter_from_db.function(c,T) #run the function just written from the database
@@ -278,13 +292,21 @@ def page_dashboard(state):
             elif disp_option2 == 'Linear':
                 log = 'linear'
             fn_plot.plotalt(x,y,log,mat_class,param_name,unit_in,unit_out)
+        #------------------------------------- FUNCTION STRING  -------------------------------------
         if disp_option == 'See Function':
             st.markdown('<h4>Parameter function:</h4>',unsafe_allow_html=True)
+            st.markdown('#')
             source_foo = inspect.getsource(parameter_from_db)  # foo is normal function
             st.write(source_foo)
 
+        #-------------------------------------DOWNLOADD  PYTHON FUNCTION  -------------------------------------
+        source_foo = inspect.getsource(parameter_from_db)
+        b64 = base64.b64encode(source_foo.encode()).decode()  # some strings <-> bytes conversions necessary here
+        href = f'<a href="data:file/csv;base64,{b64}">**[Download Python Function]**</a> right-click and save as &lt;function_name&gt;.py'
+        st.markdown(href, unsafe_allow_html=True)
 
-        #PAPER INFORMATION
+
+    #------------------------------------- PAPER INFORMATION  -------------------------------------
     st.write('---')
     st.markdown('***PAPER***')
     st.markdown('<h3>'+dispdf.title.iloc[0]+'</h3>',unsafe_allow_html=True)
@@ -305,15 +327,85 @@ def page_dashboard(state):
         col3.write(methoddf.to_string(index=False))
     except:
         col3.write('No method available')
-
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ADVANCED QUERIES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 def page_advanced(state):
     st.title(":rocket: Advanced Queries")
     # display_state_values(state)
+    #=============================== EXAMPLE QUERIES  ===============================
+    samplesdict = {
+    "OCV curves for cathodes with higher than 50% nickel content" :  '''
+        SELECT DISTINCT data.data_id,parameter.name, material.name, paper.paper_tag,data.raw_data, parameter.units_output, data.temp_range
+        FROM data
+        JOIN paper ON paper.paper_id = data.paper_id
+        JOIN material ON material.material_id = data.material_id
+        JOIN parameter ON parameter.parameter_id = data.parameter_id
+        WHERE parameter.name = 'half cell ocv'
+        AND material.ni > 0.5
+        ''',
+    "See all parameters available in LiionDB": '''
+        SELECT * FROM parameter
+        ''',
+    "Li diffusivities in graphite that are valid at 10 °C": '''
+        SELECT DISTINCT data.data_id,parameter.name, material.name, paper.paper_tag, paper.doi, data.temp_range
+        FROM data
+        JOIN paper ON paper.paper_id = data.paper_id
+        JOIN material ON material.material_id = data.material_id
+        JOIN parameter ON parameter.parameter_id = data.parameter_id
+        WHERE parameter.name = 'diffusion coefficient'
+        AND material.class = 'negative'
+        AND material.gr = 1
+        AND 283 BETWEEN lower(data.temp_range) AND upper(data.temp_range)
+        ''',
+    "See all separator porosities": '''
+        SELECT DISTINCT data.data_id,parameter.name, material.name, paper.paper_tag,data.raw_data
+        FROM data
+        JOIN paper ON paper.paper_id = data.paper_id
+        JOIN material ON material.material_id = data.material_id
+        JOIN parameter ON parameter.parameter_id = data.parameter_id
+        WHERE parameter.name = 'porosity'
+        AND material.class = 'separator'
+        ''',
+    "All papers that publish parameters on LFP": '''
+        SELECT DISTINCT paper.paper_tag, paper.title, paper.doi
+        FROM paper
+        JOIN data ON data.paper_id = paper.paper_id
+        JOIN material ON data.material_id = material.material_id
+        WHERE material.note = 'LiFePO4'
+        ''',
+    "Parameters that have been measured with EIS": '''
+        SELECT DISTINCT parameter.name
+        FROM parameter
+        JOIN data ON data.parameter_id = parameter.parameter_id
+        JOIN data_method ON data.data_id = data_method.data_id
+        JOIN method ON data_method.method_id = method.method_id
+        WHERE  method.name = 'EIS'
+        ''',
+    "Full electrolyte parameterizations": '''
+        SELECT DISTINCT material.name, paper.paper_tag, parameter.name as param_name
+        FROM material
+        JOIN data ON data.material_id = material.material_id
+        JOIN paper ON data.paper_id = paper.paper_id
+        JOIN parameter ON data.parameter_id = parameter.parameter_id
+        WHERE material.class = 'electrolyte'
+        AND parameter.name IN ('ionic conductivity','diffusion coefficient','transference number','thermodynamic factor')
+        LIMIT 5
+        ''',
+    "See the Doyle 1996 paper parameters": '''
+        SELECT DISTINCT data.data_id,parameter.name, material.name, paper.paper_tag,data.raw_data, parameter.units_output, data.notes
+        FROM data
+        JOIN paper ON paper.paper_id = data.paper_id
+        JOIN material ON material.material_id = data.material_id
+        JOIN parameter ON parameter.parameter_id = data.parameter_id
+        WHERE paper.paper_tag = 'Doyle1996'
+        '''}
 
     st.write("---")
-    st.write("Here are some examples, and how you can see what the full structure of the database schema is")
-    st.write("---")
+    form = st.form(key='examplesqlform')
+    the_example = form.selectbox('Choose some example queries from this drop down list to get started!',list(samplesdict.keys()))
+    submit_example = form.form_submit_button('Load into query box below')
 
+    st.write("---")
+    #=============================== QUERY BOX  ===============================
     @st.cache(allow_output_mutation=True, hash_funcs={"_thread.RLock": lambda _: None})
     def init_connection():
         db_connection_string = {
@@ -328,21 +420,26 @@ def page_advanced(state):
         dfndb = db_connection['dbobject']
         return dfndb
     dfndb = init_connection()
+
     default_query = '''SELECT DISTINCT data.data_id,parameter.name as parameter, material.name as material, paper.paper_tag,data.raw_data, parameter.units_output, data.temp_range, data.notes
 FROM data
 JOIN paper ON paper.paper_id = data.paper_id
 JOIN material ON material.material_id = data.material_id
 JOIN parameter ON parameter.parameter_id = data.parameter_id
-WHERE parameter.name = 'Maximum Concentration'
-and material.class = 'cathode'
+WHERE parameter.name = 'half cell ocv'
+and material.class = 'positive'
 LIMIT 5
             '''
 
     if state.query is None:
         state.query = default_query
+
+    if submit_example:
+            state.query = samplesdict[the_example]
+
     st.markdown('<h3>Build SQL Query</h3>', unsafe_allow_html=True)
     form = st.form(key='Query',clear_on_submit=False)
-    state.query = form.text_area('Note: "data.data_id" required',state.query,height=300)
+    state.query = form.text_area('Note: Selecting "data.data_id" is required to view parameters',state.query,height=300)
     submit_button = form.form_submit_button(label='Run Statement')
     st.markdown('<h3>Results Table</h3>', unsafe_allow_html=True)
     df = pd.read_sql(state.query,dfndb)
@@ -429,6 +526,7 @@ LIMIT 5
 
     # st.dataframe(dispdf.transpose(),height = 1000)
     st.write("---")
+    #=============================== DISPLAY DATA PRETTY  ===============================
     #PARAMETER
     st.markdown('***PARAMETER***')
     col1, col2 = st.beta_columns(2)
@@ -442,7 +540,7 @@ LIMIT 5
     col2.write(dispdf.mat_note.iloc[0],unsafe_allow_html=True)
 
     st.write('---')
-    #PLOTTING SHOWING Data
+    #------------------------------------- PLOTTING  -------------------------------------
     log = 'linear'
     mat_class = dispdf.mat_class.iloc[0]
     param_name = dispdf.param_name.iloc[0]
@@ -460,15 +558,18 @@ LIMIT 5
     if dispdf.raw_data_class.iloc[0] == 'value':
         col1, col2, col3, col4 = st.beta_columns(4)
         col1.markdown('***DATA: VALUE***')
-        col3.markdown(''+dispdf.raw_data.iloc[0]+'',unsafe_allow_html=True)
+        if float(dispdf.raw_data.iloc[0])<1E-4:
+                col3.markdown("{:.2e}".format(float(dispdf.raw_data.iloc[0])),unsafe_allow_html=True)
+        else:
+            col3.markdown(''+dispdf.raw_data.iloc[0]+'',unsafe_allow_html=True)
         col4.markdown(dispdf.unit_out.iloc[0])
 
     elif dispdf.raw_data_class.iloc[0] == 'array':
-        # st.write('array')
         col1, col2, col3 = st.beta_columns(3)
         col1.markdown('***DATA: ARRAY***')
         disp_option = col2.radio("Display options",('Plot', 'Array'))
         csv_data = fn_db.read_data(df)
+
         c = csv_data[:,0]
         y = csv_data[:,1]
         x = c
@@ -482,10 +583,17 @@ LIMIT 5
             fn_plot.plotalt(x,y,log,mat_class,param_name,unit_in,unit_out)
         if disp_option == 'Array':
             csvdf = pd.DataFrame(csv_data,columns=[unit_in, unit_out])
-            csvdf
+            csvdf.iloc[:, 0] = pd.to_numeric(csvdf.iloc[:, 0], downcast="float")
+            st.write(csvdf.style.format("{:.2e}"))
+
+        #------------------------------------- DOWNLOAD CSV  -------------------------------------
+        csvdf = pd.DataFrame(csv_data,columns=[unit_in, unit_out])
+        csv = csvdf.to_csv(index=False)
+        b64 = base64.b64encode(csv.encode()).decode()  # some strings <-> bytes conversions necessary here
+        href = f'<a href="data:file/csv;base64,{b64}">**[Download CSV]**</a> right-click and save as &lt;array_name&gt;.csv'
+        st.markdown(href, unsafe_allow_html=True)
 
     elif dispdf.raw_data_class.iloc[0] == 'function':
-        # st.write('array')
         col1, col2, col3, col4 = st.beta_columns(4)
         col1.markdown('***DATA: FUNCTION***')
         Tlow = np.double(df.temp_range[0].lower)
@@ -495,7 +603,7 @@ LIMIT 5
         disp_option = col3.radio("Display options",('Plot', 'See Function'))
         c_low = float(df.input_range.to_numpy()[0].lower)+0.001
         c_max = float(df.input_range.to_numpy()[0].upper)-0.001
-        c = np.linspace(c_low,c_max,10000)
+        c = np.linspace(c_low,c_max,100)
         T = tempslide
         try:
             y = parameter_from_db.function(c,T) #run the function just written from the database
@@ -514,6 +622,13 @@ LIMIT 5
             st.markdown('<h4>Parameter function:</h4>',unsafe_allow_html=True)
             source_foo = inspect.getsource(parameter_from_db)  # foo is normal function
             st.write(source_foo)
+
+        #-------------------------------------DOWNLOADD  PYTHON FUNCTION  -------------------------------------
+        source_foo = inspect.getsource(parameter_from_db)
+        b64 = base64.b64encode(source_foo.encode()).decode()  # some strings <-> bytes conversions necessary here
+        href = f'<a href="data:file/csv;base64,{b64}">**[Download Python Function]**</a> right-click and save as &lt;function_name&gt;.py'
+        st.markdown(href, unsafe_allow_html=True)
+
 
 
         #PAPER INFORMATION
@@ -541,16 +656,6 @@ LIMIT 5
 
 def display_state_values(state):
     st.write("Query Input: ", state.query)
-
-    # st.dataframe(state.queryresult)
-    # st.write("Slider state:", state.slider)
-    # st.write("Radio state:", state.radio)
-    # st.write("Checkbox state:", state.checkbox)
-    # st.write("Selectbox state:", state.selectbox)
-    # st.write("Multiselect state:", state.multiselect)
-    #
-    # for i in range(3):
-    #     st.write(f"Value {i}:", state[f"State value {i}"])
 
     if st.button("Clear state"):
         state.clear()
@@ -597,10 +702,6 @@ class _SessionState:
     def sync(self):
         """Rerun the app with all state values up to date from the beginning to fix rollbacks."""
 
-        # Ensure to rerun only once to avoid infinite loops
-        # caused by a constantly changing state value at each run.
-        #
-        # Example: state.value += 1
         if self._state["is_rerun"]:
             self._state["is_rerun"] = False
 

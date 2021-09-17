@@ -1,10 +1,9 @@
 
-def function(c_e):
+def function(x):
     import numpy as np
-    # Fitting from Chen2020 Manuscript - fitted from Nyman2008
-    c_e = np.array(c_e)
-    c = c_e/1000 #mol/m3 to mol/L
+    # FITTING:
+    # Equations taken directly from paper
     
-    De = 8.794E-11*c**2 - 3.972E-10*c + 4.862E-10 #m2/s 
-    
-    return De
+    U = 0.7222 + 0.13868*x + 0.028952*x**0.5 - 0.017189*(1/x) + 0.0019144*(1/(x**1.5)) + 0.28082*np.exp(15*(0.06-x)) - 0.79844*np.exp(0.44649*(x-0.92))
+
+    return U
