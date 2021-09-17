@@ -1,0 +1,12 @@
+.DS_Store
+
+# running files
+*.pyc
+*.py~
+.~lock*
+*.swp
+
+# Python cache
+*__pycache__/
+*.cache
+.ipynb_checkpoints/
