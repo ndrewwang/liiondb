@@ -1,3 +1,15 @@
+def liiondb():
+    import fn_sql
+    db_connection = {
+    'address' : 'dfn-parameters.postgres.database.azure.com',
+    'port' : '5432',
+    'username' : 'liiondb@dfn-parameters',
+    'password' : 'Multi-Scale Modelling Project',
+    'dbname' : 'dfndb'}
+    db_connection = fn_sql.sqlalchemy_connect(db_connection) #Make connection
+    dfndb = db_connection['dbobject']
+    return dfndb, db_connection
+    
 def write_file(function_binary,write_file_path):
     with open(write_file_path, 'wb') as f:
         f.write(function_binary)
@@ -13,19 +25,19 @@ def read_data(df):
 
     if raw_data_class == 'value':
 
-        print('raw_data is value')
+#         print('raw_data is value')
         raw_data = df['raw_data'][0]
 
     elif raw_data_class == 'function':
 
         raw_data = np.NaN
-        print('raw_data is function')
+#         print('raw_data is function')
         if type(function_binary) != type(None):
             write_file(function_binary,write_file_path)
-            print('parameter_from_db.py downloaded')
+#             print('parameter_from_db.py downloaded')
 
     elif raw_data_class == 'array':
-        print('raw_data is array')
+#         print('raw_data is array')
         csv_array = raw_data
         csv_array = csv_array.replace("{", "[")
         csv_array = csv_array.replace("}", "]")

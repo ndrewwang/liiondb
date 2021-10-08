@@ -5,6 +5,9 @@ import inspect
 import sys
 import os
 import importlib
+cwd = os.getcwd()
+fn_dir = cwd + '/functions'
+sys.path.append(fn_dir)
 import fn_sql
 import fn_db
 import fn_plot
@@ -61,8 +64,8 @@ def page_dashboard(state):
         db_connection_string = {
         'address' : 'dfn-parameters.postgres.database.azure.com',
         'port' : '5432',
-        'username' : 'testuser@dfn-parameters',
-        'password' : 'testuserpassword',
+        'username' : 'liiondb@dfn-parameters',
+        'password' : 'Multi-Scale Modelling Project',
         'dbname' : 'dfndb',
         }
         db_connection = fn_sql.sqlalchemy_connect(db_connection_string) #Make connection
