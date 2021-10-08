@@ -2,7 +2,6 @@ import psycopg2
 from sqlalchemy import create_engine
 
 def liiondb():
-    import fn_sql
     db_connection = {
     'address' : 'dfn-parameters.postgres.database.azure.com',
     'port' : '5432',
