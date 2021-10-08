@@ -12,8 +12,8 @@ If you use LiionDB in your work, please cite our paper at: doi.org
 You may access the early version of LiionDB  at the link below:
 
 **[https://ndrewwang.github.io/liiondb/](https://ndrewwang.github.io/liiondb/)**
-
 LiionDB was created using [streamlit.io](https://streamlit.io/)
+
 ---
 ### 🐍 Using LiionDB with Python
 
