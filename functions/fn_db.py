@@ -1,3 +1,6 @@
+import psycopg2
+from sqlalchemy import create_engine
+
 def liiondb():
     import fn_sql
     db_connection = {
@@ -6,9 +9,20 @@ def liiondb():
     'username' : 'liiondb@dfn-parameters',
     'password' : 'Multi-Scale Modelling Project',
     'dbname' : 'dfndb'}
-    db_connection = fn_sql.sqlalchemy_connect(db_connection) #Make connection
+    db_connection = sqlalchemy_connect(db_connection) #Make connection
     dfndb = db_connection['dbobject']
     return dfndb, db_connection
+
+def sqlalchemy_connect(db_connection):
+    postgres_str = ('postgresql://{username}:{password}@{ipaddress}:{port}/{dbname}'
+       .format(username=db_connection['username'],
+               password=db_connection['password'],
+               ipaddress=db_connection['address'],
+               port=db_connection['port'],
+               dbname=db_connection['dbname']))
+    dfndb = create_engine(postgres_str)
+    db_connection['dbobject']=dfndb
+    return db_connection
     
 def write_file(function_binary,write_file_path):
     with open(write_file_path, 'wb') as f:
