@@ -4,8 +4,5 @@ streamlit==1.0.0
 pandas
 numpy
 matplotlib
-altair
-markdown
-modules
 awesome_streamlit==0.5.1
 markdown
