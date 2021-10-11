@@ -21,7 +21,8 @@ def write(dispdf):
     col1, col2 = st.columns(2)
     col1.markdown(dispdf.authors.iloc[0])
     url = dispdf.url.iloc[0]
-    col2.markdown("[**Open Paper URL**](www.google.com)")
+    link = '[GitHub](http://github.com)'
+    col2.markdown(link, unsafe_allow_html=True)
     # if col2.button('Open paper URL'):
         # webbrowser.open_new_tab(dispdf.url.iloc[0])
     #NOTES TEMPRANGE, & METHOD
