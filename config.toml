@@ -1,3 +1,2 @@
-[general]
-
-email=""
+[global]
+dataFrameSerialization = "legacy"

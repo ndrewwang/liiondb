@@ -1,5 +1,8 @@
 import psycopg2
 from sqlalchemy import create_engine
+def test():
+    print('hello')
+
 
 def liiondb():
     db_connection = {
@@ -22,19 +25,19 @@ def sqlalchemy_connect(db_connection):
     dfndb = create_engine(postgres_str)
     db_connection['dbobject']=dfndb
     return db_connection
-    
+
 def write_file(function_binary,write_file_path):
     with open(write_file_path, 'wb') as f:
         f.write(function_binary)
-   
-def read_data(df):    
+
+def read_data(df):
     import numpy as np
     import os
     raw_data = df['raw_data'][0]
     raw_data_class = df['raw_data_class'][0]
     function_binary = df['function'][0]
-    cwd = os.getcwd()   
-    write_file_path = cwd + '/parameter_from_db.py'
+    cwd = os.getcwd()
+    write_file_path = cwd + '/streamlit_gui/elements/parameter_from_db.py'
 
     if raw_data_class == 'value':
 
