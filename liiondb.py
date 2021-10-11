@@ -64,5 +64,5 @@ def main():
     ast.shared.components.write_page(page)
 
 if __name__ == "__main__":
-    st.set_page_config(layout="wide")
+    # st.set_page_config(layout="wide")
     main()
