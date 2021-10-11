@@ -4,5 +4,5 @@ streamlit==1.0.0
 pandas
 numpy
 matplotlib
-awesome_streamlit==0.5.1
+awesome_streamlit
 markdown
