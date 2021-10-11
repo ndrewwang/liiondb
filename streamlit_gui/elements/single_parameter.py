@@ -49,7 +49,6 @@ def write(selections,session_state):
 
     return session_state
 
-@st.cache
 def perform_data_query(data_id):
     dfndb, db_connection = fn_db.liiondb()
     QUERY = f'SELECT * FROM data WHERE data_id = {data_id}'
