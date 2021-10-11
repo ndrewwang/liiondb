@@ -7,6 +7,5 @@ matplotlib
 altair
 markdown
 modules
-webbrowser
 awesome_streamlit==0.5.1
 markdown
