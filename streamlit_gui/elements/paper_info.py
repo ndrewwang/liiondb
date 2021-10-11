@@ -20,8 +20,9 @@ def write(dispdf):
     st.markdown('<h3>'+dispdf.title.iloc[0]+'</h3>',unsafe_allow_html=True)
     col1, col2 = st.columns(2)
     col1.markdown(dispdf.authors.iloc[0])
-    if col2.button('Open paper URL'):
-        webbrowser.open_new_tab(dispdf.url.iloc[0])
+    col2.markdown("[**Open Paper URL**]({dispdf.url.iloc[0]})")
+    # if col2.button('Open paper URL'):
+        # webbrowser.open_new_tab(dispdf.url.iloc[0])
     #NOTES TEMPRANGE, & METHOD
     col1, col2, col3 = st.columns(3)
     col1.markdown('***NOTES***')
