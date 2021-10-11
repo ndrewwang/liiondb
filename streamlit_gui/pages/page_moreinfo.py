@@ -19,4 +19,4 @@ def write():
     st.markdown('<h5>LiionDB entity relationship diagram:</h5>', unsafe_allow_html=True)
     # st.write('')
 
-    st.image('/Users/andrew/Dropbox/Research/DPhil/0 dfndb/liiondb_working/streamlit_gui/media/liiondb_erd.png')
+    st.image('streamlit_gui/media/liiondb_erd.png')
