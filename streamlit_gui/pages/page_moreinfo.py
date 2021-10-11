@@ -7,13 +7,13 @@ def write():
     st.write('---')
 
     st.markdown('<h5>Read the LiionDB parameterisation review preprint:</h5>', unsafe_allow_html=True)
-    if st.button('Archive Link'):
-        webbrowser.open_new_tab('https://www.doi.org')
+    link = '[**Prepint Link**](https://www.doi.org)'
+    st.markdown(link, unsafe_allow_html=True)
 
     st.write('---')
     st.markdown('<h5>GitHub:</h5>', unsafe_allow_html=True)
-    if st.button('LiionDB on GitHub'):
-        webbrowser.open_new_tab('https://github.com/ndrewwang/liiondb')
+    link = '[**PLiionDB on GitHub**](https://github.com/ndrewwang/liiondb)'
+    st.markdown(link, unsafe_allow_html=True)
 
     st.write('---')
     st.markdown('<h5>LiionDB entity relationship diagram:</h5>', unsafe_allow_html=True)
