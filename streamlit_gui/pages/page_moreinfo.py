@@ -12,7 +12,7 @@ def write():
 
     st.write('---')
     st.markdown('<h5>GitHub:</h5>', unsafe_allow_html=True)
-    link = '[**PLiionDB on GitHub**](https://github.com/ndrewwang/liiondb)'
+    link = '[**LiionDB on GitHub**](https://github.com/ndrewwang/liiondb)'
     st.markdown(link, unsafe_allow_html=True)
 
     st.write('---')
