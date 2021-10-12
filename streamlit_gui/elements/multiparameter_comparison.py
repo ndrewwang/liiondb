@@ -175,7 +175,6 @@ def param_check(selections): #selections pre data_id samplesdict
         st.write('Please select data with the same parameter to compare')
         raise ValueError('Cannot plot comparison of different parameter types')
 # @st.cache
-@st.cache
 def perform_data_query(data_id):
     dfndb, db_connection = fn_db.liiondb()
     QUERY = f'SELECT * FROM data WHERE data_id = {data_id}'
