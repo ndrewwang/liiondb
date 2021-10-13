@@ -23,7 +23,10 @@ def plot_single(form,x,y,log,mat_class,param_name,unit_in,unit_out):
 
     xlabel = '['+ unit_in+']'
     ylabel = param_name + '  [' + unit_out + ']'
-    plt.plot(x,y,'-',color='#FF0066')
+    if len(x)==1:
+        plt.plot(x,y,'x-',color='#FF0066')
+    else:
+        plt.plot(x,y,'-',color='#FF0066')
 
     ax = plt.gca()
     ax.yaxis.set_tick_params(width=border_width)

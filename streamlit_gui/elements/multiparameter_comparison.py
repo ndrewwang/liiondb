@@ -101,7 +101,10 @@ def write(selections,session_state):
             y = csv_data[:,1]
             x = c
             y = y
-            plt.plot(x,y,'-',label=leg_string)
+            if len(x)==1:
+                plt.plot(x,y,'x-',label=leg_string)
+            else:
+                plt.plot(x,y,'-',label=leg_string)
 
         elif df.raw_data_class[0] == 'value':
             n = 10
