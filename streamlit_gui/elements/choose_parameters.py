@@ -28,7 +28,7 @@ def write(df_result,session_state):
     A = id + param + mat
     data_list = id + space + param + space + mat + space + tag
     form = st.form(key='my_form')
-    selections = form.multiselect('Choose a single parameter to see full details or multiple to run a comparison',data_list)
+    selections = form.multiselect('Choose a single parameter to see full details',data_list)
     submit_button = form.form_submit_button(label='Go', on_click = increment_counter)
     if 'count' not in st.session_state:
         st.session_state.count = 0
