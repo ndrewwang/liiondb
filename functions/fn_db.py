@@ -39,7 +39,7 @@ def read_data(df):
     cwd = os.getcwd()
     write_file_path = cwd + '/streamlit_gui/elements/parameter_from_db.py'
     # write_file_path = '/tmp/parameter_from_db.py'
-    st.write(write_file_path)
+    # st.write(write_file_path)
     if raw_data_class == 'value':
 
 #         print('raw_data is value')
