@@ -31,6 +31,7 @@ def write_file(function_binary,write_file_path):
         f.write(function_binary)
 
 def read_data(df):
+    import streamlit as st
     import numpy as np
     import os
     raw_data = df['raw_data'][0]
@@ -38,7 +39,8 @@ def read_data(df):
     function_binary = df['function'][0]
     cwd = os.getcwd()
     write_file_path = cwd + '/streamlit_gui/elements/parameter_from_db.py'
-
+    st.write('TESTESTEST')
+    st.write(write_file_path)
     if raw_data_class == 'value':
 
 #         print('raw_data is value')
