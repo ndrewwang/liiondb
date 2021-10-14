@@ -80,7 +80,7 @@ def write(dispdf,df,session_state):
 
         c_low = float(df.input_range.to_numpy()[0].lower)+0.001
         c_max = float(df.input_range.to_numpy()[0].upper)-0.001
-        c = np.linspace(c_low,c_max,100)
+        c = np.linspace(c_low,c_max,1000)
         T = slidevalue
         try:
             y = streamlit_gui.elements.parameter_from_db.function(c,T) #run the function just written from the database
