@@ -31,7 +31,6 @@ def write_file(function_binary,write_file_path):
         f.write(function_binary)
 
 def read_data(df):
-    import streamlit as st
     import numpy as np
     import os
     raw_data = df['raw_data'][0]
