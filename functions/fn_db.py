@@ -37,7 +37,7 @@ def read_data(df):
     raw_data_class = df['raw_data_class'][0]
     function_binary = df['function'][0]
     cwd = os.getcwd()
-    write_file_path = cwd + 'liiondb/streamlit_gui/elements/parameter_from_db.py'
+    write_file_path = cwd + '/liiondb/streamlit_gui/elements/parameter_from_db.py'
     # write_file_path = '/tmp/parameter_from_db.py'
     # st.write(write_file_path)
     if raw_data_class == 'value':
