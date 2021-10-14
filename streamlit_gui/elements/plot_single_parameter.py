@@ -27,8 +27,10 @@ def write(dispdf,df,session_state):
     unit_in = dispdf.unit_in.iloc[0]
     unit_out = dispdf.unit_out.iloc[0]
     csv_data = fn_db.read_data(df)
-    import streamlit_gui.elements.parameter_from_db#import/reload parameter_from_db.py file
-    importlib.reload(streamlit_gui.elements.parameter_from_db)
+    import tmp.parameter_from_db#import/reload parameter_from_db.py file
+    importlib.reload(tmp.parameter_from_db)
+    # import streamlit_gui.elements.parameter_from_db#import/reload parameter_from_db.py file
+    # importlib.reload(streamlit_gui.elements.parameter_from_db)
     form = st.form(key='plot_form')
     #IF Value
     if dispdf.raw_data_class.iloc[0] == 'value':
@@ -83,9 +85,12 @@ def write(dispdf,df,session_state):
         c = np.linspace(c_low,c_max,1000)
         T = slidevalue
         try:
-            y = streamlit_gui.elements.parameter_from_db.function(c,T) #run the function just written from the database
+            # y = streamlit_gui.elements.parameter_from_db.function(c,T) #run the function just written from the database
+            y = tmp.parameter_from_db.function(c,T) #run the function just written from the database
+
         except:
-            y = streamlit_gui.elements.parameter_from_db.function(c)
+            # y = streamlit_gui.elements.parameter_from_db.function(c)
+            y = tmp.parameter_from_db.function(c)
         x = c
         y = y
 
