@@ -38,10 +38,11 @@ def read_data(df):
     raw_data_class = df['raw_data_class'][0]
     function_binary = df['function'][0]
     cwd = os.getcwd()
-    # write_file_path = cwd + '/streamlit_gui/elements/parameter_from_db.py'
-    write_file_path = '/streamlit_gui/elements/parameter_from_db.py'
-    st.write('TESTESTEST')
+    write_file_path = cwd + '/streamlit_gui/elements/parameter_from_db.py'
+    # write_file_path = '/streamlit_gui/elements/parameter_from_db.py'
+    # st.write('TESTESTEST')
     st.write(write_file_path)
+    st.write(function_binary)
     if raw_data_class == 'value':
 
 #         print('raw_data is value')
