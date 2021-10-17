@@ -73,9 +73,13 @@ def write(selections,session_state):
     for i,data_id in enumerate(data_id_list):
         leg_string = legend_list[i]
         df = perform_data_query(data_id)
-        csv_data = fn_db.read_data(df)
-        import streamlit_gui.elements.parameter_from_db#import/reload parameter_from_db.py file
-        importlib.reload(streamlit_gui.elements.parameter_from_db)
+        csv_data = fn_db.gui_read_data(df)
+
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("parameter_from_db", "/tmp/parameter_from_db.py")
+        parameter_from_db = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(parameter_from_db)
+
         #IF FUNCTION NEEDS A TEMPERATURE, TRY 298 THEN THE MEAN OF THE 2 LIMITS
         if df.raw_data_class[0] == 'function':
             T = 298
@@ -89,9 +93,9 @@ def write(selections,session_state):
             c_max = float(df.input_range.to_numpy()[0].upper)-0.001
             c = np.linspace(c_low,c_max) #SI Units mol/m3
             try:
-                y = streamlit_gui.elements.parameter_from_db.function(c,T) #run the function just written from the database
+                y = parameter_from_db.function(c,T) #run the function just written from the database
             except:
-                y = streamlit_gui.elements.parameter_from_db.function(c)
+                y = parameter_from_db.function(c)
             x = c
             y = y
             plt.plot(x,y,'-',label=leg_string)
