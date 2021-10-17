@@ -83,11 +83,10 @@ def gui_read_data(df):
     elif raw_data_class == 'function':
 
         raw_data = np.NaN
-#         print('raw_data is function')
         if type(function_binary) != type(None):
             write_file(function_binary,write_file_path)
-#             print('parameter_from_db.py downloaded')
-
+            write_file(''.encode(),'/tmp/__init__.py')
+            
     elif raw_data_class == 'array':
 #         print('raw_data is array')
         csv_array = raw_data
