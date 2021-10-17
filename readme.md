@@ -26,4 +26,6 @@ If you would like to interact with the parameter database with programmatically,
 ### Acknowledgements
 
  - Supported by the [Multi-Scale Modelling](https://www.faraday.ac.uk/research/lithium-ion/battery-system-modelling/) project within [The Faraday Institution](https://www.faraday.ac.uk/)
-  
+
+[![DOI](https://zenodo.org/badge/394467534.svg)](https://zenodo.org/badge/latestdoi/394467534)
+
