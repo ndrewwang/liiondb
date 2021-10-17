@@ -18,6 +18,8 @@ import streamlit_gui.pages.page_examplequeries
 import streamlit_gui.pages.page_moreinfo
 import streamlit_gui.pages.page_submissions
 import streamlit_gui.pages.page_pythonnotebooks
+import streamlit_gui.pages.page_testplot
+
 def main():
     # ================ SIDE BAR PAGES AND TEXT ===============================
     PAGES = {
