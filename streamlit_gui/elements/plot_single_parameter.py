@@ -27,8 +27,8 @@ def write(dispdf,df,session_state):
     unit_in = dispdf.unit_in.iloc[0]
     unit_out = dispdf.unit_out.iloc[0]
     csv_data = fn_db.gui_read_data(df)
-    import tmp.parameter_from_db
-    importlib.reload(tmp.parameter_from_db)
+    import parameter_from_db
+    importlib.reload(parameter_from_db)
     # import streamlit_gui.elements.parameter_from_db#import/reload parameter_from_db.py file
     # importlib.reload(streamlit_gui.elements.parameter_from_db)
     form = st.form(key='plot_form')
