@@ -27,15 +27,12 @@ def write(dispdf,df,session_state):
     unit_in = dispdf.unit_in.iloc[0]
     unit_out = dispdf.unit_out.iloc[0]
     csv_data = fn_db.gui_read_data(df)
-    # import parameter_from_db
-    # importlib.reload(parameter_from_db)
+
     import importlib.util
     spec = importlib.util.spec_from_file_location("parameter_from_db", "/tmp/parameter_from_db.py")
     parameter_from_db = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(parameter_from_db)
-    # foo.MyClass()
-    # import streamlit_gui.elements.parameter_from_db#import/reload parameter_from_db.py file
-    # importlib.reload(streamlit_gui.elements.parameter_from_db)
+
     form = st.form(key='plot_form')
     #IF Value
     if dispdf.raw_data_class.iloc[0] == 'value':
