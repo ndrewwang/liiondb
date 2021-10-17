@@ -85,8 +85,8 @@ def write(selections,session_state):
             T = 298
             Tlow = np.float(df.temp_range[0].lower)
             Tup = np.float(df.temp_range[0].upper)
-            form.write(Tlow)
-            form.write(Tup)
+            # form.write(Tlow)
+            # form.write(Tup)
             if T<Tlow and T>Tup:
                 T = (Tlow+Tup)/2
             c_low = float(df.input_range.to_numpy()[0].lower)+0.001
