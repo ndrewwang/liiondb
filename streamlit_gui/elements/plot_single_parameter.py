@@ -26,7 +26,7 @@ def write(dispdf,df,session_state):
     param_name = dispdf.param_name.iloc[0]
     unit_in = dispdf.unit_in.iloc[0]
     unit_out = dispdf.unit_out.iloc[0]
-    csv_data = fn_db.read_data(df)
+    csv_data = fn_db.gui_read_data(df)
     # import parameter_from_db
     # importlib.reload(tmp.parameter_from_db)
     import streamlit_gui.elements.parameter_from_db#import/reload parameter_from_db.py file
