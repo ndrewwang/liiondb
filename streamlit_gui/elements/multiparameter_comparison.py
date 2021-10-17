@@ -91,7 +91,7 @@ def write(selections,session_state):
                 T = (Tlow+Tup)/2
             c_low = float(df.input_range.to_numpy()[0].lower)+0.001
             c_max = float(df.input_range.to_numpy()[0].upper)-0.001
-            c = np.linspace(c_low,c_max) #SI Units mol/m3
+            c = np.linspace(c_low,c_max,1000) #SI Units mol/m3
             try:
                 y = parameter_from_db.function(c,T) #run the function just written from the database
             except:
