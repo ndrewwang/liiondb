@@ -105,7 +105,7 @@ def write(dispdf,df,session_state):
         if disp_option == 'See function':
             import textwrap
             form.markdown('<h4>Parameter function:</h4>',unsafe_allow_html=True)
-            source_foo = inspect.getsource(streamlit_gui.elements.parameter_from_db)  # foo is normal function
+            source_foo = inspect.getsource(parameter_from_db)  # foo is normal function
             nlines = source_foo.count('\n')
             user_input = form.text_area("", source_foo,height=23*nlines)
 
