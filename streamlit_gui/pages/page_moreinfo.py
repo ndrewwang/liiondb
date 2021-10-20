@@ -7,7 +7,7 @@ def write():
     st.write('---')
 
     st.markdown('<h5>Read the LiionDB parameterisation review preprint:</h5>', unsafe_allow_html=True)
-    link = '[**Prepint Link**](https://www.doi.org)'
+    link = '[**Prepint Link**](https://arxiv.org/abs/2110.09879)'
     st.markdown(link, unsafe_allow_html=True)
 
     st.write('---')
