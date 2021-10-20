@@ -40,10 +40,10 @@ def main():
     st.sidebar.markdown('<h3>About</h3>', unsafe_allow_html=True)
     st.sidebar.info(
         "This interactive database of DFN-type battery model parameters "
-        "accompanies the review manuscript: "
-        "[**Parameterising Continuum-Level Li-ion Battery Models**.](https://www.overleaf.com/project/5ed63d9378cbf700018a2018)"
+        "accompanies the review manuscript (preprint): "
+        "[**Parameterising Continuum-Level Li-ion Battery Models**.](https://arxiv.org/abs/2110.09879)"
         " If you use LiionDB in your work, please cite our paper at: "
-        "[doi.org](https://www.doi.org/)")
+        "[arXiv:2110.09879](https://arxiv.org/abs/2110.09879)")
 
     st.sidebar.markdown('<h3>Support</h3>', unsafe_allow_html=True)
     st.sidebar.info(
