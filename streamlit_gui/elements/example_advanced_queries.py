@@ -49,7 +49,7 @@ def write():
         ''',
 
     "See the Doyle 1996 paper parameters": '''
-        SELECT DISTINCT data.data_id,parameter.name as parameter_name material.name as material_name paper.paper_tag,data.raw_data, parameter.units_output, data.notes
+        SELECT DISTINCT data.data_id,parameter.name as parameter_name, material.name as material_name, paper.paper_tag,data.raw_data, parameter.units_output, data.notes
         FROM data
         JOIN paper ON paper.paper_id = data.paper_id
         JOIN material ON material.material_id = data.material_id
