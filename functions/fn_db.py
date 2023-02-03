@@ -1,6 +1,5 @@
 import psycopg2
 import pkg_resources
-pkg_resources.require("sqlalchemy==1.4.46")
 from sqlalchemy import create_engine
 def test():
     print('hello')
