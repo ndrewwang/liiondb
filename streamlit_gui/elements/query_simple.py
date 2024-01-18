@@ -34,8 +34,8 @@ def write():
 
     #COLUMN3
     df2 = load_all_table_joins(2)
-    df2 = df2[pd.DataFrame(df2['class'].tolist()).isin(selection0).any(1).values]
-    selectlist = df2[pd.DataFrame(df2['parameter_name'].tolist()).isin(selection1).any(1).values]
+    df2 = df2[pd.DataFrame(df2['class'].tolist()).isin(selection0).any(axis=1).values]
+    selectlist = df2[pd.DataFrame(df2['parameter_name'].tolist()).isin(selection1).any(axis=1).values]
     selectlist = selectlist.sort_values('material_name')
     selectlist = selectlist['material_name']
     selection2 = col3.multiselect('3. Material',selectlist.drop_duplicates())
