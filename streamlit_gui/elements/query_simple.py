@@ -27,7 +27,7 @@ def write():
 
     #COLUMN2
     df1 = load_all_table_joins(1)
-    selectlist = df1[pd.DataFrame(df1['class'].tolist()).isin(selection0).any(1).values]
+    selectlist = df1[pd.DataFrame(df1['class'].tolist()).isin(selection0).any(axis=1).values]
     selectlist = selectlist.sort_values('parameter_id')
     selection1 = col2.multiselect('2. Parameter',selectlist['name'].drop_duplicates())
     selection1 = single_or_multi(selection1)
