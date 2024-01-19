@@ -42,7 +42,7 @@ def plot_single(form,x,y,log,mat_class,param_name,unit_in,unit_out):
     plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
     plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
     plt.rcParams['axes.linewidth'] = border_width
-    plt.grid(b=True,which='both',axis='both',linewidth=border_width/2)
+    # plt.grid(b=True,which='both',axis='both',linewidth=border_width/2)
 
     if param_name == 'half cell ocv':
         vmin = 0
