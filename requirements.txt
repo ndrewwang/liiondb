@@ -1,8 +1,8 @@
 psycopg2-binary==2.9.1
 sqlalchemy==1.4.46
-streamlit==1.10.0
-pandas
-numpy
-matplotlib
+streamlit==1.0.0
+pandas==1.4.4
+numpy==1.23.2
+matplotlib==3.6.0
 awesome_streamlit
 markdown
