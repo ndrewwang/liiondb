@@ -1,23 +1,14 @@
 
 # LiionDB
 
-LiionDB is an interactive database of DFN-type battery model parameters that will accompany the upcoming review manuscript: Parameterising Continuum-Level Li-ion Battery Models. 
+LiionDB is a database of DFN-type battery model parameters that accompanies the review manuscript: [Review of parameterisation and a novel database (LiionDB) for continuum Li-ion battery models.](https://iopscience.iop.org/article/10.1088/2516-1083/ac692c/meta)
 
-If you use LiionDB in your work, please cite our paper at: doi.org
-
-
-
----
-### 🔗 Link to LiionDB GUI
-You may access the early version of LiionDB  at the link below:
-
-**[https://ndrewwang.github.io/liiondb/](https://ndrewwang.github.io/liiondb/)**
-LiionDB was created using [streamlit.io](https://streamlit.io/)
+If you use LiionDB in your work, please cite our paper at: [https://doi.org/10.1088/2516-1083/ac692c](https://doi.org/10.1088/2516-1083/ac692c)
 
 ---
 ### 🐍 Using LiionDB with Python
 
-If you would like to interact with the parameter database with programmatically, check out these Colab python notebooks here:
+LiionDB is a PostgreSQL parameter database that can be interacted with programmatically, we provide examples through Google Colab python notebooks here:
 
 1. [Example LiionDB queries](https://colab.research.google.com/github/ndrewwang/liiondb/blob/main/python%20notebooks/1_Example_Queries.ipynb)
 2. [Plotting parameter comparisons](https://colab.research.google.com/github/ndrewwang/liiondb/blob/main/python%20notebooks/2_Parameter_Plotter.ipynb)
