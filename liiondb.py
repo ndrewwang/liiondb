@@ -22,10 +22,10 @@ import streamlit_gui.pages.page_pythonnotebooks
 def main():
     # ================ SIDE BAR PAGES AND TEXT ===============================
     PAGES = {
-            "Parameter Dashboard":[],
-            "Advanced Queries": [],
-            "Example Advanced Queries": [],
-            "Python Notebooks": [],
+            # "Parameter Dashboard":[],
+            # "Advanced Queries": [],
+            # "Example Advanced Queries": [],
+            "Accessing LiionDB": [],
             "Contribute": [],
             "More Info": [],
     }
@@ -57,7 +57,7 @@ def main():
             # "Parameter Dashboard": streamlit_gui.pages.page_dashboard,
             # "Advanced Queries": streamlit_gui.pages.page_advanced,
             # "Example Advanced Queries": streamlit_gui.pages.page_examplequeries,
-            "Python Notebooks": streamlit_gui.pages.page_pythonnotebooks,
+            "Accessing LiionDB": streamlit_gui.pages.page_pythonnotebooks,
             "Contribute": streamlit_gui.pages.page_submissions,
             "More Info": streamlit_gui.pages.page_moreinfo,
     }
