@@ -54,9 +54,9 @@ def main():
     # st.sidebar.image('streamlit_gui/media/msm.png',width=50,output_format='PNG')
 
     PAGES = {
-            "Parameter Dashboard": streamlit_gui.pages.page_dashboard,
-            "Advanced Queries": streamlit_gui.pages.page_advanced,
-            "Example Advanced Queries": streamlit_gui.pages.page_examplequeries,
+            # "Parameter Dashboard": streamlit_gui.pages.page_dashboard,
+            # "Advanced Queries": streamlit_gui.pages.page_advanced,
+            # "Example Advanced Queries": streamlit_gui.pages.page_examplequeries,
             "Python Notebooks": streamlit_gui.pages.page_pythonnotebooks,
             "Contribute": streamlit_gui.pages.page_submissions,
             "More Info": streamlit_gui.pages.page_moreinfo,
