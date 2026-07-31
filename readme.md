@@ -1,6 +1,10 @@
 
 # 🔋 LiionDB
 
+### **→ Browse the database live at [liiondb.streamlit.app](https://liiondb.streamlit.app) ←**
+
+[![Open app](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://liiondb.streamlit.app)
+
 LiionDB is an open database of DFN-type (Doyle–Fuller–Newman) lithium-ion battery model parameters, curated from literature, that accompanies the review manuscript: [Review of parameterisation and a novel database (LiionDB) for continuum Li-ion battery models.](https://iopscience.iop.org/article/10.1088/2516-1083/ac692c/meta)
 
 If you use LiionDB in your work, please cite our paper at: [https://doi.org/10.1088/2516-1083/ac692c](https://doi.org/10.1088/2516-1083/ac692c)
