@@ -30,7 +30,11 @@ def write(selections):
 
     curves = []
     for p in parsed:
-        label = '%s (%s)' % (p['material'], p['paper'])
+        # data_id in the label keeps curves distinct even when several
+        # datasets share the same material and paper (common in the DB) —
+        # identical labels would otherwise be merged into one line by the
+        # color grouping in fn_plot.plot_multi
+        label = '%s (%s) #%s' % (p['material'], p['paper'], p['data_id'])
         df = queries.data_row(p['data_id'])
         raw_class = df.raw_data_class.iloc[0]
 

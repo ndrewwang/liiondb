@@ -29,10 +29,17 @@ def write():
         return df_result
 
     st.dataframe(df_display, height=400, hide_index=True)
-    if 'data_id' in df_display.columns and len(df_display):
-        df_result = get_df_result(tuple(int(i) for i in df_display['data_id'].dropna()))
-    else:
+    if 'data_id' not in df_display.columns:
         st.caption('data.data_id not selected in query')
+    elif len(df_display) == 0:
+        st.caption('Query returned no rows')
+    else:
+        try:
+            data_ids = tuple(int(i) for i in df_display['data_id'].dropna())
+        except (ValueError, TypeError):
+            st.error('The data_id column must contain integer data.data_id values')
+            return df_result
+        df_result = get_df_result(data_ids)
     return df_result
 
 

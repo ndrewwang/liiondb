@@ -49,6 +49,9 @@ def _make_chart(df, log, xlabel, ylabel, ydomain, color_field=None, color=None):
     encodings = dict(
         x=alt.X('x', title=xlabel),
         y=alt.Y('y', title=ylabel, scale=yscale),
+        # draw points in data order (like matplotlib), not sorted by x —
+        # matters for non-monotonic curves such as hysteresis loops
+        order=alt.Order('idx'),
     )
     if color_field:
         encodings['color'] = alt.Color(color_field, title=None,
@@ -73,6 +76,7 @@ def plot_single(container, x, y, log, mat_class, param_name, unit_in, unit_out):
     xlabel, ylabel, ydomain = axis_config(mat_class, param_name, unit_in, unit_out)
     df = pd.DataFrame({'x': np.asarray(x, dtype=float),
                        'y': np.asarray(y, dtype=float)}).dropna()
+    df['idx'] = range(len(df))
     chart = _make_chart(df, log, xlabel, ylabel, ydomain, color=LINE_COLOR)
     container.altair_chart(chart, use_container_width=True)
 
@@ -83,9 +87,11 @@ def plot_multi(container, curves, log, mat_class, param_name, unit_in, unit_out)
     xlabel, ylabel, ydomain = axis_config(mat_class, param_name, unit_in, unit_out)
     frames = []
     for label, x, y in curves:
-        frames.append(pd.DataFrame({'x': np.asarray(x, dtype=float),
-                                    'y': np.asarray(y, dtype=float),
-                                    'source': str(label)}).dropna())
+        frame = pd.DataFrame({'x': np.asarray(x, dtype=float),
+                              'y': np.asarray(y, dtype=float),
+                              'source': str(label)}).dropna()
+        frame['idx'] = range(len(frame))
+        frames.append(frame)
     if not frames:
         container.caption('Nothing to plot')
         return
