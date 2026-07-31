@@ -24,7 +24,7 @@ def write():
         AND 283 BETWEEN lower(data.temp_range) AND upper(data.temp_range)
         ''',
     "See all separator porosities": '''
-        SELECT DISTINCT data.data_id,parameter.name as parameter_name material.name as material_name paper.paper_tag,data.raw_data
+        SELECT DISTINCT data.data_id,parameter.name as parameter_name, material.name as material_name, paper.paper_tag,data.raw_data
         FROM data
         JOIN paper ON paper.paper_id = data.paper_id
         JOIN material ON material.material_id = data.material_id

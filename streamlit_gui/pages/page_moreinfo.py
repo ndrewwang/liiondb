@@ -1,22 +1,22 @@
+import os
 import streamlit as st
-import webbrowser
 
-# DASHBOARD PAGE ====================
+# MORE INFO PAGE ====================
+
+MEDIA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'media')
+
 def write():
     st.title(":information_source: More about LiionDB")
     st.write('---')
 
-    st.markdown('<h5>Read the LiionDB parameterisation review preprint:</h5>', unsafe_allow_html=True)
-    link = '[**Prepint Link**](https://arxiv.org/abs/2110.09879)'
-    st.markdown(link, unsafe_allow_html=True)
+    st.markdown('<h5>Read the LiionDB parameterisation review:</h5>', unsafe_allow_html=True)
+    st.markdown('[**Parameterising continuum-level Li-ion battery models** '
+                '(Prog. Energy 2022)](https://doi.org/10.1088/2516-1083/ac692c)')
 
     st.write('---')
     st.markdown('<h5>GitHub:</h5>', unsafe_allow_html=True)
-    link = '[**LiionDB on GitHub**](https://github.com/ndrewwang/liiondb)'
-    st.markdown(link, unsafe_allow_html=True)
+    st.markdown('[**LiionDB on GitHub**](https://github.com/ndrewwang/liiondb)')
 
     st.write('---')
     st.markdown('<h5>LiionDB entity relationship diagram:</h5>', unsafe_allow_html=True)
-    # st.write('')
-
-    st.image('streamlit_gui/media/liiondb_erd.png')
+    st.image(os.path.join(MEDIA_DIR, 'liiondb_erd.png'))

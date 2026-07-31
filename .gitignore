@@ -10,3 +10,5 @@
 *__pycache__/
 *.cache
 .ipynb_checkpoints/
+# local tooling
+.claude/

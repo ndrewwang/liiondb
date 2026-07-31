@@ -1,94 +1,49 @@
 import streamlit as st
-import psycopg2
-import inspect
-import sys
-import os
-import importlib
-import functions.fn_db as fn_db
-import functions.fn_plot as fn_plot
 import pandas as pd
-import numpy as np
-import webbrowser
-import markdown
-import base64
+import streamlit_gui.queries as queries
 
-# DASHBOARD PAGE ====================
-# @st.cache(suppress_st_warning=True)
-def write(session_state):
+# ADVANCED SQL QUERY BOX ====================
 
-    dfndb, db_connection = fn_db.liiondb()
-
+def write():
     st.markdown('<h5>Build SQL Query</h5>', unsafe_allow_html=True)
-    form = st.form(key='Query',clear_on_submit=False)
-    QUERY = form.text_area('Note: Selecting "data.data_id" is required to view parameters',height=300)
-    submit = form.form_submit_button(label='Run Advanced',on_click = increment_counter)
-    append_current_count()
+    with st.form(key='Query', clear_on_submit=False):
+        QUERY = st.text_area('Note: Selecting "data.data_id" is required to view parameters',
+                             st.session_state.get('advanced_sql', ''), height=300)
+        submit = st.form_submit_button(label='Run Advanced')
+    if submit and QUERY.strip():
+        st.session_state.advanced_sql = QUERY
 
-    st.write("---")
+    st.write('---')
     st.markdown('<h5>Results Table:</h5>', unsafe_allow_html=True)
 
-    if check_refresh()==False:
-        st.write(st.session_state.df_display,height = 1200)
-        try:
-            df_result = get_df_result(st.session_state.df_display)
-        except:
-            st.caption('data.data_id not selected in query')
-            df_result=[]
+    sql = st.session_state.get('advanced_sql', '').strip()
+    df_result = []
+    if not sql:
+        st.caption('Enter a SQL query above and press Run')
+        return df_result
+
+    try:
+        df_display = queries.run_query(sql)
+    except Exception as e:
+        st.error('Invalid SQL statement: %s' % e)
+        return df_result
+
+    st.dataframe(df_display, height=400, hide_index=True)
+    if 'data_id' in df_display.columns and len(df_display):
+        df_result = get_df_result(tuple(int(i) for i in df_display['data_id'].dropna()))
     else:
-        # try:
-        df = pd.read_sql(QUERY,dfndb)
-        df_display = convert_df_numrange(df)
-        st.session_state.df_display = df_display
-        if submit:
-            st.write(df_display,height = 1200)
-            st.session_state.df_display = df_display
-        try:
-            df_result = get_df_result(df_display)
-        except:
-            st.caption('data.data_id not selected in query')
-            df_result=[]
-        # except:
-            # st.caption('Invalid SQL statement submitted')
-            # df_result=[]
+        st.caption('data.data_id not selected in query')
+    return df_result
 
-    session_state = st.session_state
-    st.session_state.df_result = df_result
-    return df_result,session_state
 
-@st.cache
-def get_df_result(df_display):
-    dfndb, db_connection = fn_db.liiondb()
-    data_ids = df_display['data_id']
-    selection = tuple(data_ids)
-    QUERY = f'''SELECT DISTINCT data.data_id, parameter.name as parameter, material.name as material, paper.paper_tag as paper,paper.url,data.raw_data, parameter.units_output, data.temp_range, data.notes
+@st.cache_data(show_spinner=False)
+def get_df_result(data_ids):
+    '''Standard results-table columns for the data_ids a user query returned.'''
+    id_list = '(' + ', '.join(str(i) for i in data_ids) + ')'
+    QUERY = f'''SELECT DISTINCT data.data_id, parameter.name as parameter, material.name as material, paper.paper_tag as paper, paper.url, data.raw_data, parameter.units_output, data.temp_range, data.notes
     FROM data
     JOIN paper ON paper.paper_id = data.paper_id
     JOIN material ON material.material_id = data.material_id
     JOIN parameter ON parameter.parameter_id = data.parameter_id
-    WHERE data.data_id IN {selection}'''
-    df = pd.read_sql(QUERY,dfndb)
-    df_result = convert_df_numrange(df)
-    return df_result
-
-def check_refresh():
-    refresh = False
-    if len(st.session_state.count_array)>1:
-        if st.session_state.count_array[-2]!=st.session_state.count_array[-1]:
-            refresh = True
-    return refresh
-
-def increment_counter():
-    st.session_state.count +=1
-
-def append_current_count():
-    st.session_state.count_array.append(st.session_state.count)
-# @st.cache
-def convert_df_numrange(df):
-    import numpy as np
-    if 'temp_range' in df.keys():
-        A = df.temp_range.astype(str)
-        df.temp_range = A
-    if 'input_range' in df.keys():
-        A = df.input_range.astype(str)
-        df.input_range = A
-    return df
+    WHERE data.data_id IN {id_list}'''
+    return queries.run_query(QUERY)

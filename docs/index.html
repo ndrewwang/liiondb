@@ -1,37 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>liiondb</title>
+  <title>LiionDB — DFN Battery Parameter Database</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="LiionDB is an open database of DFN-type lithium-ion battery model parameters with literature references.">
   <style type="text/css">
-    html {
-      overflow: auto;
+    html, body { margin: 0; padding: 0; height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    body { display: flex; flex-direction: column; }
+    header {
+      background: #0e1117; color: #fafafa; padding: 6px 16px;
+      display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+      font-size: 14px;
     }
-    html,
-    body,
-    div,
-    iframe {
-      margin: 0px;
-      padding: 0px;
-      height: 100%;
-      border: none;
-    }
-    iframe {
-      display: block;
-      width: 100%;
-      border: none;
-      overflow-y: auto;
-      overflow-x: hidden;
-    }
+    header .title { font-weight: 700; font-size: 16px; }
+    header a { color: #ff4b8b; text-decoration: none; }
+    header a:hover { text-decoration: underline; }
+    header .spacer { flex: 1; }
+    iframe { display: block; width: 100%; flex: 1; border: none; }
   </style>
 </head>
 <body>
-  <iframe src="https://ndrewwang-liiondb-liiondb-kjr1e5.streamlitapp.com/~/+/"
-      frameborder="0"
-      marginheight="0"
-      marginwidth="0"
-      width="100%"
-      height="100%"
+  <header>
+    <span class="title">🔋 LiionDB</span>
+    <span>DFN battery parameter database</span>
+    <span class="spacer"></span>
+    <a href="https://github.com/ndrewwang/liiondb">GitHub&nbsp;+&nbsp;data</a>
+    <a href="https://colab.research.google.com/github/ndrewwang/liiondb/blob/main/python%20notebooks/1_Example_Queries.ipynb">Python&nbsp;notebook</a>
+    <a href="https://doi.org/10.1088/2516-1083/ac692c">Paper</a>
+  </header>
+  <iframe src="https://liiondb.streamlit.app/?embed=true"
+      title="LiionDB Parameter Dashboard"
       scrolling="auto">
-</iframe>
+  </iframe>
 </body>
 </html>

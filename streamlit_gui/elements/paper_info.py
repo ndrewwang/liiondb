@@ -1,44 +1,25 @@
 import streamlit as st
-import psycopg2
-import inspect
-import sys
-import os
-import importlib
-import functions.fn_db as fn_db
-import functions.fn_plot as fn_plot
-import pandas as pd
-import numpy as np
-import webbrowser
-import altair as alt
-import markdown
-import base64
+
+# PAPER INFORMATION ====================
 
 def write(dispdf):
-        #PAPER INFORMATION
     st.write('---')
     st.markdown('***PAPER***')
-    st.markdown('<h3>'+dispdf.title.iloc[0]+'</h3>',unsafe_allow_html=True)
+    st.markdown('<h3>' + str(dispdf.title.iloc[0]) + '</h3>', unsafe_allow_html=True)
     col1, col2 = st.columns(2)
-    col1.markdown(dispdf.authors.iloc[0])
+    col1.markdown(str(dispdf.authors.iloc[0]))
     url = dispdf.url.iloc[0]
-    link = '[**Paper URL**](%s)'%(url)
-    col2.markdown(link, unsafe_allow_html=True)
-    # if col2.button('Open paper URL'):
-        # webbrowser.open_new_tab(dispdf.url.iloc[0])
-    #NOTES TEMPRANGE, & METHOD
+    if url:
+        col2.markdown('[**Paper URL**](%s)' % url)
+
     col1, col2, col3 = st.columns(3)
     col1.markdown('***NOTES***')
     col1.write(dispdf.notes.iloc[0])
     col2.markdown('***TEMP RANGE*** [K]')
     col2.write(dispdf.temp_range.iloc[0])
     col3.markdown('***METHODS***')
-    try:
-        methoddf = dispdf.method_name
-        methoddf = methoddf.astype(str) + ','
-        col3.write(methoddf.to_string(index=False))
-    except:
+    if 'method_name' in dispdf.columns:
+        methods = dispdf.method_name.dropna().drop_duplicates()
+        col3.write(', '.join(methods) if len(methods) else 'No method available')
+    else:
         col3.write('No method available')
-        # st.write(dispdf)
-
-if __name__ == "__main__":
-    write()
