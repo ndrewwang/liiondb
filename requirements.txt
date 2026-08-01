@@ -1,6 +1,8 @@
-sqlalchemy>=1.4
+# pandas and sqlalchemy majors must match: pandas <2 cannot drive
+# sqlalchemy 2.x engines (github issue #23)
+sqlalchemy>=2.0
 streamlit>=1.36
-pandas>=1.5
+pandas>=2.0
 numpy>=1.24
 altair>=5
 matplotlib>=3.6

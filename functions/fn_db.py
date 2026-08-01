@@ -72,6 +72,20 @@ def liiondb():
     db_connection = {'address': DB_PATH, 'dbname': 'dfndb', 'dbobject': dfndb}
     return dfndb, db_connection
 
+def read_sql(query, engine=None):
+    '''Drop-in pd.read_sql(query, engine) replacement that works on every
+    pandas/SQLAlchemy version combination. pandas < 2.0 cannot execute
+    plain-string queries against SQLAlchemy 2.x engines; this wraps the
+    query in text() and builds the DataFrame directly.
+    (Thanks to @UC0403 in github issue #23 for the diagnosis.)'''
+    import pandas as pd
+    from sqlalchemy import text
+    if engine is None:
+        engine = get_engine()
+    with engine.connect() as conn:
+        result = conn.execute(text(query))
+        return pd.DataFrame(result.fetchall(), columns=list(result.keys()))
+
 def parse_range(value, default=(None, None)):
     '''Parse an exported numrange string like '[250.0, 333.0]' into a
     (lo, hi) float tuple. Missing/nan bounds fall back to `default`.'''
