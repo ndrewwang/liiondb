@@ -1,9 +1,9 @@
 
 # 🔋 LiionDB
 
-### **→ Browse the database live at [liiondb.streamlit.app](https://liiondb.streamlit.app) ←**
+### **→ Browse the database live at [liiondb.com](https://liiondb.com) ←**
 
-[![Open app](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://liiondb.streamlit.app)
+[![Open app](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://liiondb.com)
 
 LiionDB is an open database of DFN-type (Doyle–Fuller–Newman) lithium-ion battery model parameters, curated from literature, that accompanies the review manuscript: [Review of parameterisation and a novel database (LiionDB) for continuum Li-ion battery models.](https://iopscience.iop.org/article/10.1088/2516-1083/ac692c/meta)
 
@@ -18,7 +18,7 @@ There are three ways to use LiionDB:
 
 The interactive Parameter Dashboard (browse, plot, and download parameters) runs on Streamlit Community Cloud:
 
-**→ [liiondb.streamlit.app](https://liiondb.streamlit.app)**
+**→ [liiondb.com](https://liiondb.com)** (mirrored at [liiondb.streamlit.app](https://liiondb.streamlit.app))
 
 ---
 ### 2. 🐍 Python / SQL (for your own analysis)
